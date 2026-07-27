@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Malvek — SSH &amp; SFTP client, no subscription</title>
+<meta name="description" content="Malvek is a fast SSH and SFTP client for iOS and Android. One-time purchase, no subscription.">
+<style>
+  :root {
+    --bg: #f4f9f4;
+    --fg: #0f1a14;
+    --muted: #4a5a51;
+    --accent: #2fbf71;
+    --card: #ffffff;
+    --border: #dbe6df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1a14;
+      --fg: #eef5f0;
+      --muted: #a9bdb1;
+      --accent: #3fd684;
+      --card: #16241c;
+      --border: #24352b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+  .glyph {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: linear-gradient(160deg, #0f1a14, #1c2e22);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font: 700 12px/1 monospace;
+  }
+  h1 {
+    font-size: 40px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+  }
+  p.lead {
+    font-size: 18px;
+    color: var(--muted);
+    margin: 0 0 40px;
+    max-width: 52ch;
+  }
+  .features {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .feature h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+  }
+  .feature p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .cta a {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    color: var(--fg);
+  }
+  .cta a.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #06130c;
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+  }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge"><span class="glyph">&gt;_</span> Malvek</div>
+    <h1>An SSH client you buy once.</h1>
+    <p class="lead">
+      Full terminal, SFTP browser, and saved hosts for iOS and Android —
+      no monthly fee to open a shell.
+    </p>
+
+    <div class="features">
+      <div class="feature">
+        <h3>SSH terminal + SFTP, one app</h3>
+        <p>Password or private-key auth, saved hosts, and a full SFTP
+           browser for uploads and downloads.</p>
+      </div>
+      <div class="feature">
+        <h3>Trust-on-first-use host verification</h3>
+        <p>Every new host's key fingerprint is shown before you connect —
+           and flagged in red if it ever changes.</p>
+      </div>
+      <div class="feature">
+        <h3>Your keys never leave your device</h3>
+        <p>Credentials are stored in the iOS Keychain / Android Keystore,
+           never on a server we run — because we don't run one.</p>
+      </div>
+      <div class="feature">
+        <h3>Pay once</h3>
+        <p>One saved host free to try it. Unlock everything with a single
+           purchase — no subscription, no recurring charge.</p>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a class="primary" href="https://github.com/HappyMealSteak/Malvek">View on GitHub</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+
+    <footer>
+      <span>Malvek</span>
+      <span><a href="mailto:privacy@malvekconnect.com">privacy@malvekconnect.com</a></span>
+    </footer>
+  </div>
+</body>
+</html>
