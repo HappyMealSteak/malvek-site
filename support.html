@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Malvek — Support</title>
+<meta name="description" content="Support for Malvek, the one-time-purchase SSH and SFTP client for iPhone.">
+<style>
+  :root {
+    --bg: #f4f9f4;
+    --fg: #0f1a14;
+    --muted: #4a5a51;
+    --accent: #2fbf71;
+    --card: #ffffff;
+    --border: #dbe6df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1a14;
+      --fg: #eef5f0;
+      --muted: #a9bdb1;
+      --accent: #3fd684;
+      --card: #16241c;
+      --border: #24352b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+  a.back {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  h1 {
+    font-size: 30px;
+    margin: 20px 0 4px;
+    letter-spacing: -0.02em;
+  }
+  .updated {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 36px;
+  }
+  h2 {
+    font-size: 18px;
+    margin: 40px 0 12px;
+  }
+  p, li { color: var(--fg); }
+  .summary {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 8px;
+  }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 8px; }
+  code {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.9em;
+  }
+  footer {
+    margin-top: 56px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="index.html">&larr; Malvek</a>
+    <h1>Support</h1>
+    <p class="updated">Malvek for iPhone</p>
+
+    <div class="summary">
+      <p><strong>Email <a href="mailto:support@malvekconnect.com">support@malvekconnect.com</a></strong>
+      and you will get a reply from a person. There is no ticket system and no
+      account to log into &mdash; the same reason the app has no backend.</p>
+    </div>
+
+    <h2>Before you write in</h2>
+    <p>A few things come up often enough to answer here.</p>
+
+    <h2>The keyboard has no Ctrl, Esc, or arrow keys</h2>
+    <p>It does &mdash; iOS's own keyboard doesn't provide them, so Malvek adds
+      its own row directly above it while you're connected. Ctrl, Esc, Tab, the
+      arrows, Ctrl+C, Ctrl+D, Ctrl+Z, Ctrl+L, Home, End, Page Up and Page Down
+      are all there; scroll the row sideways for the rest. Tap
+      <code>ctrl</code> and then a letter to send any other control code.</p>
+
+    <h2>It asks me to verify a host key</h2>
+    <p>That is deliberate, and it is the same thing the <code>ssh</code> command
+      does the first time you connect to a machine. Malvek shows the server's
+      fingerprint and remembers it. If that fingerprint ever changes you will
+      get a red warning, because a changed key can mean the connection is being
+      intercepted.</p>
+
+    <h2>"Could not agree on an encryption algorithm"</h2>
+    <p>The server is offering only ciphers Malvek cannot negotiate. Enabling
+      AES-GCM or AES-CTR on the server side resolves it. Malvek does not
+      support chacha20-poly1305.</p>
+
+    <h2>Can I get my keys back if I lose my phone?</h2>
+    <p>No, and that is the trade. Malvek has no server, so a key generated on
+      your device exists only there &mdash; nobody, including us, can restore
+      it. Keep a copy of anything you cannot afford to lose on a machine you
+      control. See the <a href="privacy.html">privacy policy</a> for the
+      whole picture.</p>
+
+    <h2>What does the purchase actually unlock?</h2>
+    <p>The number of hosts you can save, and nothing else. Three are free. The
+      terminal, SFTP, saved scripts, and SSH key generation and import all work
+      without paying. It is one payment, not a subscription.</p>
+
+    <h2>Reporting a bug</h2>
+    <p>Email the address above with the iPhone model, the iOS version, and what
+      you were doing. If it involves a connection failure, the exact message
+      Malvek printed is the most useful thing you can include.</p>
+
+    <h2>Security issues</h2>
+    <p>Email <a href="mailto:security@malvekconnect.com">security@malvekconnect.com</a>
+      rather than filing anything public, and please allow time for a fix
+      before disclosing.</p>
+
+    <footer>
+      <span>Malvek</span> &middot;
+      <a href="privacy.html">Privacy Policy</a> &middot;
+      <a href="mailto:support@malvekconnect.com">support@malvekconnect.com</a>
+    </footer>
+  </div>
+</body>
+</html>

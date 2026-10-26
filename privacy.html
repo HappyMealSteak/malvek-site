@@ -87,7 +87,7 @@
   <div class="wrap">
     <a class="back" href="index.html">&larr; Malvek</a>
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: July 27, 2026</p>
+    <p class="updated">Last updated: August 24, 2026</p>
 
     <div class="summary">
       <p><strong>Malvek does not collect, transmit, or sell any of your
@@ -107,6 +107,17 @@
         Keychain or the Android Keystore), not in the app's regular
         database, and are never transmitted anywhere except as part of
         authenticating to the server <em>you</em> configured.</li>
+      <li><strong>SSH keys generated in the app</strong> are created
+        entirely on your device using Ed25519 cryptography. The private key
+        never leaves the Keychain &mdash; Malvek has no server to send it to.
+        Only the public key can be shared, via the system share sheet, and
+        only when you explicitly choose to.</li>
+      <li><strong>SSH keys you import</strong> from a file or the clipboard
+        are read on-device and written straight to the Keychain. They are not
+        copied anywhere else and are not transmitted.</li>
+      <li><strong>Face ID / Touch ID</strong>, if you turn on the app lock, is
+        handled entirely by iOS. Malvek receives only a yes-or-no result and
+        never sees biometric data.</li>
       <li><strong>SSH host key fingerprints</strong> (used to detect if a
         server's identity changes between connections) are stored
         locally alongside your saved hosts. These are not secret and are
