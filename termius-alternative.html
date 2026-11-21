@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Termius &amp; Blink alternative with no subscription — Malvek SSH for iPhone</title>
+<meta name="description" content="Malvek is an iPhone SSH and SFTP client you buy once: free for 3 hosts, then $14.99 one time. No subscription, no account, no cloud. An honest comparison with Termius and Blink.">
+<link rel="canonical" href="https://malvekconnect.com/termius-alternative.html">
+<style>
+  :root {
+    --bg: #f4f9f4;
+    --fg: #0f1a14;
+    --muted: #4a5a51;
+    --accent: #2fbf71;
+    --card: #ffffff;
+    --border: #dbe6df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1a14;
+      --fg: #eef5f0;
+      --muted: #a9bdb1;
+      --accent: #3fd684;
+      --card: #16241c;
+      --border: #24352b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+  .glyph {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: linear-gradient(160deg, #0f1a14, #1c2e22);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font: 700 12px/1 monospace;
+  }
+  h1 {
+    font-size: 40px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+  }
+  p.lead {
+    font-size: 18px;
+    color: var(--muted);
+    margin: 0 0 40px;
+    max-width: 52ch;
+  }
+  .features {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .feature h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+  }
+  .feature p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .cta a {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    color: var(--fg);
+  }
+  .cta a.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #06130c;
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+  }
+  footer a { color: inherit; }
+</style>
+<style>
+  table { width:100%; border-collapse:collapse; margin:8px 0 40px; font-size:14px; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:13px; }
+  h2 { font-size:20px; margin:40px 0 12px; }
+  .note { color:var(--muted); font-size:13px; }
+  a { color:var(--fg); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="badge" href="index.html" style="text-decoration:none"><span class="glyph">&gt;_</span> Malvek</a>
+    <h1>An alternative to Termius and Blink that you buy once</h1>
+    <p class="lead">
+      Malvek is an SSH and SFTP client for iPhone with no subscription, no
+      account, and no cloud. Here is an honest look at when it is the right
+      pick, and when it is not.
+    </p>
+
+    <h2>Price</h2>
+    <table>
+      <tr><th></th><th>Price</th><th>Model</th></tr>
+      <tr><td><strong>Malvek</strong></td><td>Free for 3 hosts, then $14.99 once</td><td>One-time purchase</td></tr>
+      <tr><td>Termius</td><td>Free Starter tier; Pro is $10/month billed yearly</td><td>Subscription</td></tr>
+      <tr><td>Blink Shell</td><td>$19.99/year after a 2-week trial</td><td>Subscription only</td></tr>
+    </table>
+    <p class="note">Prices checked November 2026 on termius.com and blink.sh. Check their sites for current pricing.</p>
+
+    <h2>Pick Malvek if</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>You don't want another subscription</h3>
+        <p>One payment lifts the host limit for good. The terminal, SFTP,
+           saved scripts and SSH key generation are never gated, even on the
+           free tier.</p>
+      </div>
+      <div class="feature">
+        <h3>You don't want your keys in anyone's cloud</h3>
+        <p>Malvek has no server and no account. Ed25519 keys are generated on
+           the phone and stay in the iOS Keychain. Nothing syncs, because there
+           is nothing to sync to.</p>
+      </div>
+      <div class="feature">
+        <h3>You mostly need a solid terminal and file access on the go</h3>
+        <p>A key bar with Ctrl, Esc, Tab and the arrows; first-connect host key
+           checks like the <code>ssh</code> command; an SFTP browser with Unix
+           permissions; scrollback search; and fast detection when your network
+           drops mid-session.</p>
+      </div>
+    </div>
+
+    <h2>Pick something else if</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>You need port forwarding or Mosh</h3>
+        <p>Malvek doesn't do either yet. Termius includes port forwarding on
+           its free tier, and Blink supports Mosh.</p>
+      </div>
+      <div class="feature">
+        <h3>You want your hosts synced across devices</h3>
+        <p>Malvek is iPhone-only and keeps everything on the one device by
+           design. If you lose the phone, you lose its keys, the same as a
+           hardware token. Termius Pro and Prompt sync between devices.</p>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a class="primary" href="https://apps.apple.com/app/id6795195137">Download on the App Store</a>
+      <a href="index.html">About Malvek</a>
+      <a href="support.html">Support</a>
+    </div>
+
+    <footer>
+      <span>Malvek</span>
+      <span><a href="privacy.html">Privacy Policy</a></span>
+    </footer>
+  </div>
+</body>
+</html>
