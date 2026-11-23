@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to SSH into a Raspberry Pi from your iPhone — Malvek</title>
+<meta name="description" content="Step-by-step: enable SSH on a Raspberry Pi, connect from your iPhone, set up key-based login, and copy files over SFTP — no subscription app required.">
+<link rel="canonical" href="https://malvekconnect.com/ssh-raspberry-pi-iphone.html">
+<style>
+  :root {
+    --bg: #f4f9f4;
+    --fg: #0f1a14;
+    --muted: #4a5a51;
+    --accent: #2fbf71;
+    --card: #ffffff;
+    --border: #dbe6df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1a14;
+      --fg: #eef5f0;
+      --muted: #a9bdb1;
+      --accent: #3fd684;
+      --card: #16241c;
+      --border: #24352b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+  .glyph {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: linear-gradient(160deg, #0f1a14, #1c2e22);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font: 700 12px/1 monospace;
+  }
+  h1 {
+    font-size: 40px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+  }
+  p.lead {
+    font-size: 18px;
+    color: var(--muted);
+    margin: 0 0 40px;
+    max-width: 52ch;
+  }
+  .features {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .feature h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+  }
+  .feature p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .cta a {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    color: var(--fg);
+  }
+  .cta a.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #06130c;
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+  }
+  footer a { color: inherit; }
+</style>
+<style>
+  table { width:100%; border-collapse:collapse; margin:8px 0 40px; font-size:14px; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:13px; }
+  h2 { font-size:20px; margin:40px 0 12px; }
+  .note { color:var(--muted); font-size:13px; }
+  a { color:var(--fg); }
+</style>
+<style>
+  pre { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:0.92em; }
+  ol li, ul li { margin-bottom:8px; }
+  .warn { border-left:3px solid var(--accent); padding:4px 0 4px 14px; color:var(--muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="badge" href="index.html" style="text-decoration:none"><span class="glyph">&gt;_</span> Malvek</a>
+    <h1>How to SSH into a Raspberry Pi from your iPhone</h1>
+    <p class="lead">
+      Enable SSH on the Pi, connect from your phone, switch to key-based
+      login, and move files over SFTP. About ten minutes, start to finish.
+    </p>
+
+    <h2>1. Turn on SSH on the Pi</h2>
+    <p>SSH is off by default on Raspberry Pi OS. Pick whichever fits:</p>
+    <ul>
+      <li><strong>Before flashing:</strong> in Raspberry Pi Imager, open the
+        OS customisation settings, enable SSH, and set a username and
+        password. Recent Raspberry Pi OS releases have no default
+        <code>pi</code> user, so the username you set here is the one you
+        log in with.</li>
+      <li><strong>On a running Pi:</strong> run <code>sudo raspi-config</code>,
+        go to <em>Interface Options → SSH</em>, and enable it. Or run:</li>
+    </ul>
+<pre><code>sudo systemctl enable --now ssh</code></pre>
+    <p>Then find the Pi's address on your network:</p>
+<pre><code>hostname -I</code></pre>
+    <p>The first address it prints, something like <code>192.168.1.42</code>,
+      is what your phone will connect to. Your iPhone needs to be on the same
+      Wi-Fi network.</p>
+
+    <h2>2. Connect from your iPhone</h2>
+    <p>This guide uses <a href="index.html">Malvek</a>, a free SSH and SFTP
+      app for iPhone, but the steps are similar in any SSH client.</p>
+    <ol>
+      <li>Open the <strong>Hosts</strong> tab and tap <strong>+</strong>.</li>
+      <li>Give it a label (say, <em>Pi</em>), enter the address from step 1
+        as the <strong>Hostname</strong>, leave <strong>Port</strong> at 22,
+        and enter your <strong>Username</strong>.</li>
+      <li>Choose <strong>Password</strong>, enter the Pi's password, and tap
+        <strong>Save</strong>.</li>
+      <li>Tap the host, then <strong>Open terminal</strong>.</li>
+      <li>The first time, Malvek shows the Pi's host key fingerprint and asks
+        whether to trust it, the same check the <code>ssh</code> command makes.
+        Tap <strong>Trust &amp; continue</strong>. If that fingerprint ever changes later, you'll get a red
+        warning.</li>
+    </ol>
+
+    <h2>3. Switch to key-based login</h2>
+    <p>Passwords work, but a key is both safer and quicker, since you never
+      type anything.</p>
+    <ol>
+      <li>Open the <strong>Keys</strong> tab, tap <strong>Generate key</strong>,
+        and name it. Malvek creates an Ed25519 key on the phone. The private
+        half stays in the iOS Keychain.</li>
+      <li>Tap the new key and tap <strong>Copy</strong> to copy its public
+        key.</li>
+      <li>In your Pi terminal session, add it to the authorized keys
+        (paste the copied key between the quotes):</li>
+    </ol>
+<pre><code>mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh
+echo 'PASTE-PUBLIC-KEY-HERE' &gt;&gt; ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys</code></pre>
+    <ol start="4">
+      <li>Back on the <strong>Hosts</strong> tab, edit the Pi, choose
+        <strong>Private key</strong>, tap <strong>Saved key</strong>, pick the
+        key you generated, and tap <strong>Save</strong>.</li>
+      <li>Disconnect and connect again. You should get straight in with no
+        password prompt.</li>
+    </ol>
+    <p class="warn">Optional hardening: once key login works, you can turn off
+      password logins by setting <code>PasswordAuthentication no</code> in
+      <code>/etc/ssh/sshd_config</code> and running
+      <code>sudo systemctl restart ssh</code>. Test that your key works
+      <em>first</em>, or you can lock yourself out.</p>
+
+    <h2>4. Copy files with SFTP</h2>
+    <p>Tap the host and choose <strong>Browse files</strong>. You can move
+      around the Pi's file system, see Unix permissions, and upload or
+      download files without leaving the app. SFTP runs over the same SSH
+      connection, so there's nothing extra to set up on the Pi.</p>
+
+    <h2>Troubleshooting</h2>
+    <ul>
+      <li><strong>"Connection refused":</strong> SSH isn't running. Repeat step 1.</li>
+      <li><strong>Timeout:</strong> the phone and the Pi are on different networks,
+        or the address changed. Run <code>hostname -I</code> again. Setting a DHCP
+        reservation for the Pi on your router stops the address from changing.</li>
+      <li><strong>"Permission denied (publickey)":</strong> check that
+        <code>~/.ssh</code> is <code>700</code>, that <code>authorized_keys</code>
+        is <code>600</code>, and that the whole key ended up on one line.</li>
+    </ul>
+
+    <div class="cta">
+      <a class="primary" href="https://apps.apple.com/app/id6795195137">Get Malvek on the App Store</a>
+      <a href="termius-alternative.html">vs. Termius &amp; Blink</a>
+      <a href="support.html">Support</a>
+    </div>
+
+    <footer>
+      <span>Malvek: free for 3 hosts, then $14.99 once</span>
+      <span><a href="privacy.html">Privacy Policy</a></span>
+    </footer>
+  </div>
+</body>
+</html>
