@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to transfer files between your iPhone and a server (SFTP) — Malvek</title>
+<meta name="description" content="Copy files from your iPhone to a Linux server, Mac or Raspberry Pi over SFTP, and download files back to the Files app. No server software beyond SSH, no subscription.">
+<link rel="canonical" href="https://malvekconnect.com/sftp-iphone-transfer-files.html">
+<style>
+  :root {
+    --bg: #f4f9f4;
+    --fg: #0f1a14;
+    --muted: #4a5a51;
+    --accent: #2fbf71;
+    --card: #ffffff;
+    --border: #dbe6df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1a14;
+      --fg: #eef5f0;
+      --muted: #a9bdb1;
+      --accent: #3fd684;
+      --card: #16241c;
+      --border: #24352b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+  .glyph {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: linear-gradient(160deg, #0f1a14, #1c2e22);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font: 700 12px/1 monospace;
+  }
+  h1 {
+    font-size: 40px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+  }
+  p.lead {
+    font-size: 18px;
+    color: var(--muted);
+    margin: 0 0 40px;
+    max-width: 52ch;
+  }
+  .features {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .feature h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+  }
+  .feature p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .cta a {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    color: var(--fg);
+  }
+  .cta a.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #06130c;
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+  }
+  footer a { color: inherit; }
+</style>
+<style>
+  table { width:100%; border-collapse:collapse; margin:8px 0 40px; font-size:14px; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:13px; }
+  h2 { font-size:20px; margin:40px 0 12px; }
+  .note { color:var(--muted); font-size:13px; }
+  a { color:var(--fg); }
+</style>
+<style>
+  pre { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:0.92em; }
+  ol li, ul li { margin-bottom:8px; }
+  .warn { border-left:3px solid var(--accent); padding:4px 0 4px 14px; color:var(--muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="badge" href="index.html" style="text-decoration:none"><span class="glyph">&gt;_</span> Malvek</a>
+    <h1>How to transfer files between your iPhone and a server</h1>
+    <p class="lead">
+      If a machine accepts SSH, it already accepts SFTP. That covers a VPS,
+      a home server, a NAS, a Raspberry Pi, or a Mac with Remote Login turned
+      on. You don't need Samba, a cloud drive, or anything else installed on the server.
+    </p>
+
+    <h2>What you need</h2>
+    <ul>
+      <li>A server you can already SSH into: an address, a username, and a password or key.</li>
+      <li>An SFTP client on the iPhone. This guide uses
+        <a href="https://apps.apple.com/app/id6795195137">Malvek</a>, which is free
+        for up to three saved hosts. Other SFTP apps work in roughly the same way.</li>
+    </ul>
+    <p class="note">On a Mac, turn on <strong>System Settings &rarr; General &rarr;
+      Sharing &rarr; Remote Login</strong> first. Most Linux servers have SSH running
+      already. For a Raspberry Pi, see the
+      <a href="ssh-raspberry-pi-iphone.html">Raspberry Pi guide</a>.</p>
+
+    <h2>1. Open the server's files</h2>
+    <ol>
+      <li>Add the server as a host if you haven't already (hostname or IP, port 22, username).</li>
+      <li>Tap the host and choose <strong>Browse files</strong>.</li>
+      <li>On the first connection, check the host key fingerprint and accept it.
+        This is the same check the <code>ssh</code> command makes the first time.</li>
+    </ol>
+    <p>The browser opens in your home directory. Tap a folder to go into it, and
+      tap <strong>..</strong> to go back up. To jump straight to a location such
+      as <code>/var/www</code> or <code>/etc/nginx</code>, tap the path at the top
+      of the screen to open <strong>Go to path</strong>. The eye icon shows or
+      hides dotfiles.</p>
+
+    <h2>2. Upload from iPhone to the server</h2>
+    <ol>
+      <li>Go to the folder where the file should go.</li>
+      <li>Tap <strong>Upload here</strong> (the upload icon in the top bar).</li>
+      <li>Pick a file in the iOS Files picker. It can come from On My iPhone,
+        iCloud Drive, or any other provider that appears in Files.</li>
+    </ol>
+    <p>If a file with the same name is already in that folder, you're asked
+      before anything is overwritten. An overwritten file can't be recovered
+      from the phone, so read the prompt carefully.</p>
+    <p class="warn">To upload a photo, use the Photos share sheet's <strong>Save
+      to Files</strong> option first, then pick it from Files. Uploads go one file
+      at a time. To move a whole folder, zip it in Files (long-press the folder,
+      then <strong>Compress</strong>) and unzip it on the server with
+      <code>unzip</code>.</p>
+
+    <h2>3. Download from the server to iPhone</h2>
+    <ol>
+      <li>Tap the file, or long-press it.</li>
+      <li>Choose <strong>Download</strong>. A progress bar shows while it transfers.</li>
+      <li>When the share sheet appears, choose <strong>Save to Files</strong>,
+        AirDrop it to a Mac, or send it to another app.</li>
+    </ol>
+    <p>If you dismiss the share sheet, tap <strong>Open</strong> on the
+      &ldquo;Downloaded&rdquo; message to bring it back.</p>
+
+    <h2>4. Check a file without downloading it</h2>
+    <p>Choose <strong>View</strong> in the same menu to read a text file on the
+      server: a config file, a log, or a script. This works for files up to
+      512&nbsp;KB. The same menu has <strong>Rename</strong> and
+      <strong>Delete</strong>, and the folder icon at the top creates a
+      <strong>New folder</strong>. To edit a file in place, open a terminal on
+      the same host and use <code>nano</code> or <code>vim</code>.</p>
+
+    <h2>Troubleshooting</h2>
+    <ul>
+      <li><strong>&ldquo;Permission denied&rdquo; when uploading:</strong> your
+        user can't write to that folder. Upload into your home directory, then
+        move the file with <code>sudo mv</code> in a terminal.</li>
+      <li><strong>SSH works but file browsing fails:</strong> the server's SFTP
+        subsystem is turned off. Check that <code>/etc/ssh/sshd_config</code> has a
+        <code>Subsystem sftp</code> line, then restart sshd.</li>
+      <li><strong>&ldquo;Could not agree on an encryption algorithm&rdquo;:</strong>
+        enable AES-GCM or AES-CTR ciphers on the server.</li>
+      <li><strong>Large files:</strong> keep Malvek in the foreground until the
+        transfer finishes. iOS suspends apps in the background, and that stops
+        the transfer.</li>
+    </ul>
+
+    <div class="cta">
+      <a class="primary" href="https://apps.apple.com/app/id6795195137">Get Malvek on the App Store</a>
+      <a href="ssh-raspberry-pi-iphone.html">Raspberry Pi guide</a>
+      <a href="termius-alternative.html">vs. Termius &amp; Blink</a>
+    </div>
+
+    <footer>
+      <span>Malvek: free for 3 hosts, then $14.99 once</span>
+      <span><a href="privacy.html">Privacy Policy</a> &middot; <a href="support.html">Support</a></span>
+    </footer>
+  </div>
+</body>
+</html>
