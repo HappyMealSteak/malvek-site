@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to generate an SSH key on your iPhone and add it to a server — Malvek</title>
+<meta name="description" content="Create an Ed25519 SSH key on your iPhone, copy the public key to a Linux server, VPS or Raspberry Pi, and log in without a password. Also covers importing a key you already have.">
+<link rel="canonical" href="https://malvekconnect.com/ssh-key-iphone.html">
+<style>
+  :root {
+    --bg: #f4f9f4;
+    --fg: #0f1a14;
+    --muted: #4a5a51;
+    --accent: #2fbf71;
+    --card: #ffffff;
+    --border: #dbe6df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1a14;
+      --fg: #eef5f0;
+      --muted: #a9bdb1;
+      --accent: #3fd684;
+      --card: #16241c;
+      --border: #24352b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+  .glyph {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: linear-gradient(160deg, #0f1a14, #1c2e22);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font: 700 12px/1 monospace;
+  }
+  h1 {
+    font-size: 40px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+  }
+  p.lead {
+    font-size: 18px;
+    color: var(--muted);
+    margin: 0 0 40px;
+    max-width: 52ch;
+  }
+  .features {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .feature h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+  }
+  .feature p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .cta a {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--border);
+    color: var(--fg);
+  }
+  .cta a.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #06130c;
+  }
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+  }
+  footer a { color: inherit; }
+</style>
+<style>
+  table { width:100%; border-collapse:collapse; margin:8px 0 40px; font-size:14px; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:13px; }
+  h2 { font-size:20px; margin:40px 0 12px; }
+  h3 { font-size:16px; margin:24px 0 8px; }
+  .note { color:var(--muted); font-size:13px; }
+  a { color:var(--fg); }
+</style>
+<style>
+  pre { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:12px 14px; overflow-x:auto; font-size:13px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:0.92em; }
+  ol li, ul li { margin-bottom:8px; }
+  .warn { border-left:3px solid var(--accent); padding:4px 0 4px 14px; color:var(--muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="badge" href="index.html" style="text-decoration:none"><span class="glyph">&gt;_</span> Malvek</a>
+    <h1>How to generate an SSH key on your iPhone and add it to a server</h1>
+    <p class="lead">
+      An SSH key lets you log in to a server without typing a password, and it
+      is much harder to guess or steal than one. You can make the key on the
+      phone itself. Nothing has to be created on a computer and copied across.
+    </p>
+
+    <h2>How it works, in one paragraph</h2>
+    <p>A key comes in two halves. The <strong>private key</strong> stays on your
+      iPhone and is never shown to anyone. The <strong>public key</strong> is a
+      single line of text that you add to a file on the server. When you
+      connect, the server checks that your phone holds the matching private
+      half. The public key is safe to paste, email or share; the private key is
+      not.</p>
+
+    <h2>What you need</h2>
+    <ul>
+      <li>A server you can already reach: a VPS, a home server, a NAS, a
+        Raspberry Pi, or a Mac with Remote Login turned on.</li>
+      <li>One way to get the public key onto it. Password login over SSH is the
+        simplest, and most hosting providers also have an &ldquo;SSH keys&rdquo;
+        box in their control panel.</li>
+      <li>An SSH app that can generate keys. This guide uses
+        <a href="https://apps.apple.com/app/id6795195137">Malvek</a>, which is
+        free for up to three saved hosts. Key generation and import are not
+        behind the purchase.</li>
+    </ul>
+
+    <h2>1. Generate the key</h2>
+    <ol>
+      <li>Open the <strong>Keys</strong> tab and tap <strong>Generate key</strong>
+        (or the <strong>+</strong> button if you already have keys).</li>
+      <li>Give it a name you'll recognise later, such as <em>iPhone</em> or
+        <em>Home Lab</em>, and tap <strong>Generate</strong>.</li>
+    </ol>
+    <p>Malvek creates an <strong>Ed25519</strong> key pair, the type OpenSSH
+      itself now creates by default. The private half is stored in the iOS
+      Keychain on the phone. The public key appears straight away, with
+      <strong>Copy</strong> and <strong>Share</strong> buttons. You can see it
+      again at any time by tapping the key in the list.</p>
+    <p>A public key looks like this, all on one line:</p>
+    <pre><code>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...restOfKey</code></pre>
+
+    <h2>2. Add the public key to the server</h2>
+    <p>Pick whichever of these fits your server.</p>
+
+    <h3>Option A: you can log in with a password</h3>
+    <ol>
+      <li>Tap <strong>Copy</strong> on the public key.</li>
+      <li>Connect to the server with your password and open a terminal.</li>
+      <li>Run these commands, pasting the key between the quotes:</li>
+    </ol>
+<pre><code>mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh
+echo 'PASTE-PUBLIC-KEY-HERE' &gt;&gt; ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys</code></pre>
+    <p class="note">Use <code>&gt;&gt;</code> (two arrows), which adds a line.
+      A single <code>&gt;</code> would replace the file and remove any keys
+      already in it.</p>
+
+    <h3>Option B: your hosting provider has an SSH keys page</h3>
+    <p>DigitalOcean, Hetzner, Linode, Vultr, AWS Lightsail and most other
+      providers let you paste a public key in their dashboard, either on the
+      account or when creating a server. Copy the key in Malvek, paste it there,
+      and new servers come up with it already installed. On many providers this
+      only applies to servers created afterwards, so use option A for a server
+      that already exists.</p>
+
+    <h3>Option C: someone else manages the server</h3>
+    <p>Tap <strong>Share</strong> and send the public key to the administrator
+      by email or chat. It is safe to send. They add it to your account's
+      <code>authorized_keys</code> file.</p>
+
+    <h2>3. Tell the app to use the key</h2>
+    <ol>
+      <li>Long-press the host and choose <strong>Edit host</strong>, or add a
+        new host.</li>
+      <li>Under the login method, choose <strong>Private key</strong>.</li>
+      <li>Tap <strong>Saved key</strong>, pick the key you generated, and tap
+        <strong>Save</strong>.</li>
+      <li>Tap the host. It should connect without asking for a password.</li>
+    </ol>
+    <p class="warn">Optional hardening: once key login works, you can turn off
+      password logins on the server. Set <code>PasswordAuthentication no</code>
+      in <code>/etc/ssh/sshd_config</code> and restart sshd. Keep your current
+      session open and test the key from a second connection first, so a typo
+      can't lock you out.</p>
+
+    <h2>Already have a key? Import it instead</h2>
+    <p>If you'd rather use the key from your laptop, open the
+      <strong>Keys</strong> tab and tap the import button in the top bar.</p>
+    <ul>
+      <li><strong>Import from file</strong> reads a private key file such as
+        <code>id_ed25519</code> from the Files app. AirDrop it to the phone or
+        save it to iCloud Drive first.</li>
+      <li><strong>Paste a private key</strong> takes the key text from the
+        clipboard.</li>
+    </ul>
+    <p>OpenSSH, RSA and EC private keys are supported. If the key has a
+      passphrase, you're asked for it once during import. Afterwards the key is
+      protected by the iOS Keychain instead.</p>
+    <p class="note">A separate key per device is the safer habit. If the phone
+      is lost, you remove one line from <code>authorized_keys</code> and your
+      laptop's key keeps working.</p>
+
+    <h2>If you lose the phone</h2>
+    <p>The private key exists only on that device. Malvek has no server and no
+      account, so there is nothing to restore it from, and that is on purpose.
+      Log in to the server another way, delete the old phone's line from
+      <code>~/.ssh/authorized_keys</code>, then generate a new key on the new
+      phone and add it. For a server you can't afford to be locked out of, keep
+      a second way in: another device's key, or the provider's web console.</p>
+
+    <h2>Troubleshooting</h2>
+    <ul>
+      <li><strong>&ldquo;Permission denied (publickey)&rdquo;:</strong> check
+        that <code>~/.ssh</code> is <code>700</code> and
+        <code>authorized_keys</code> is <code>600</code>, that both belong to
+        your user, and that the whole key is on a single line.</li>
+      <li><strong>It still asks for a password:</strong> the host is still set
+        to <strong>Password</strong>, or the key was added under a different
+        user's home directory than the one you log in as.</li>
+      <li><strong>The key was pasted in two pieces:</strong> some terminals wrap
+        long lines when pasting. Open the file with <code>nano
+        ~/.ssh/authorized_keys</code> and join it back into one line.</li>
+      <li><strong>&ldquo;Could not agree on an encryption algorithm&rdquo;:</strong>
+        this is about ciphers, not your key. Enable AES-GCM or AES-CTR on the
+        server.</li>
+    </ul>
+
+    <div class="cta">
+      <a class="primary" href="https://apps.apple.com/app/id6795195137">Get Malvek on the App Store</a>
+      <a href="sftp-iphone-transfer-files.html">File transfer guide</a>
+      <a href="ssh-raspberry-pi-iphone.html">Raspberry Pi guide</a>
+    </div>
+
+    <footer>
+      <span>Malvek: free for 3 hosts, then $14.99 once</span>
+      <span><a href="privacy.html">Privacy Policy</a> &middot; <a href="support.html">Support</a></span>
+    </footer>
+  </div>
+</body>
+</html>
